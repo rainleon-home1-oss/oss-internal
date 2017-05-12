@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                        http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <localRepository>${user.home}/.m2/repository</localRepository>
+    <interactiveMode/>
+    <usePluginRegistry/>
+    <offline/>
+
+<!--    <proxies>
+        <proxy>
+            <id>http-proxy</id>
+            <active>true</active>
+            <protocol>http</protocol>
+            <host></host>
+            <port></port>
+        </proxy>
+    </proxies>-->
+
+    <mirrors>
+        <mirror>
+            <id>mvnCentral</id>
+            <name>Maven Central</name>
+            <url>http://repo1.maven.org/maven2/</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+        <mirror>
+            <id>internal-nexus-mirror</id>
+            <name>internal nexus mirror</name>
+            <url>${internal-nexus.mirror}</url>
+            <!--mirrorOf>central,spring-libs-release,spring-milestone,spring-libs-snapshot,conjars.org,clojars.org,org.jboss.repository,codehaus-mule-repo,repo.jenkins-ci.org</mirrorOf-->
+            <mirrorOf>external:*,!github-chshawkn-wagon-maven-plugin</mirrorOf>
+        </mirror>
+    </mirrors>
+
+    <servers>
+        <server>
+            <id>gpg.passphrase</id>
+            <passphrase>${build.gpg.passphrase}</passphrase>
+        </server>
+        <server>
+            <id>internal-nexus-releases</id>
+            <username>user_name</username>
+            <password>{encrypt password}</password>
+        </server>
+        <server>
+            <id>internal-nexus-snapshots</id>
+            <username>user_name</username>
+            <password>{encrypt password}</password>
+        </server>
+        <server>
+            <id>internal-nexus-thirdparty</id>
+            <username>user_name</username>
+            <password>{encrypt password}</password>
+        </server>
+        <server>
+            <id>internal-mvnsite</id>
+            <username>user_name</username>
+            <password>{encrypt password}</password>
+        </server>
+    </servers>
+
+    <activeProfiles>
+        <activeProfile>internal-infrastructure</activeProfile>
+    </activeProfiles>
+
+    <pluginGroups>
+        <pluginGroup>org.apache.maven.plugins</pluginGroup>
+        <pluginGroup>org.codehaus.mojo</pluginGroup>
+        <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+    </pluginGroups>
+
+    <profiles>
+        <profile>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <gpg.keyname>${build.gpg.keyname}</gpg.keyname>
+            </properties>
+        </profile>
+        <profile>
+            <id>internal-infrastructure</id>
+            <properties>
+                <sonar.host.url>${internal-sonar.host.url}</sonar.host.url>
+            </properties>
+            <repositories>
+                <repository>
+                    <id>internal-nexus-releases</id>
+                    <name>internal nexus releases</name>
+                    <url>${internal-nexus.repositories}/maven-releases/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                </repository>
+                <repository>
+                    <id>internal-nexus-snapshots</id>
+                    <name>internal nexus snapshots</name>
+                    <url>${internal-nexus.repositories}/maven-snapshots/</url>
+                    <releases><enabled>false</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                </repository>
+                <repository>
+                    <id>internal-nexus-thirdparty</id>
+                    <name>internal nexus thirdparty</name>
+                    <url>${internal-nexus.repositories}/thirdparty/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>internal-nexus-releases</id>
+                    <name>internal nexus releases</name>
+                    <url>${internal-nexus.repositories}/maven-releases/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>false</enabled></snapshots>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>internal-nexus-snapshots</id>
+                    <name>internal nexus snapshots</name>
+                    <url>${internal-nexus.repositories}/maven-snapshots/</url>
+                    <releases><enabled>false</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>internal-nexus-thirdparty</id>
+                    <name>internal nexus thirdparty</name>
+                    <url>${internal-nexus.repositories}/thirdparty/</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+</settings>

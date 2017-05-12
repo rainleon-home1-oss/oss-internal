@@ -1,0 +1,4 @@
+<!--http://maven.apache.org/guides/mini/guide-encryption.html-->
+<settingsSecurity>
+ <master>{your_token_generated_by_maven}</master>
+</settingsSecurity>
